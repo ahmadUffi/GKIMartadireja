@@ -5,7 +5,7 @@ namespace App\Http\Controllers;
 use Inertia\Inertia;
 use Inertia\Response;
 
-class LandingPageController extends Controller
+class Landingpagecontroller extends Controller
 {
     /**
      * Display the landing page with dummy data

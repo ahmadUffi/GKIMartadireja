@@ -1,15 +1,22 @@
 <?php
 
-use App\Http\Controllers\LandingPageController;
+use App\Http\Controllers\Landingpagecontroller;
 use App\Http\Controllers\ProfileController;
 use Illuminate\Foundation\Application;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
 
 // ─── Landing Page ────────────────────────────────────────────────────────────
-Route::get('/', [LandingPageController::class, 'index'])->name('home');
+// Redirect root to dashboard
+Route::get('/', function () {
+    return redirect('/dashboard');
+});
 
-Route::get('/dashboard', function () {
+// Public landing page (accessible without login)
+Route::get('/dashboard', [Landingpagecontroller::class, 'index'])->name('home');
+
+// Admin dashboard (requires authentication)
+Route::get('/admin/dashboard', function () {
     return Inertia::render('Dashboard');
 })->middleware(['auth', 'verified'])->name('dashboard');
 
