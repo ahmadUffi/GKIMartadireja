@@ -6,22 +6,50 @@ use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
 
 Route::get('/', function () {
-    return Inertia::render('Welcome', [
-        'canLogin' => Route::has('login'),
-        'canRegister' => Route::has('register'),
-        'laravelVersion' => Application::VERSION,
-        'phpVersion' => PHP_VERSION,
-    ]);
+    return Inertia::render('Admin/Dashboard');
 });
 
 Route::get('/dashboard', function () {
-    return Inertia::render('Dashboard');
-})->middleware(['auth', 'verified'])->name('dashboard');
+    return Inertia::render('Admin/Dashboard');
+})->name('dashboard');
 
-Route::middleware('auth')->group(function () {
-    Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
-    Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
-    Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
+// Temporary: Routes without auth middleware for demo
+// Members Management Routes
+Route::prefix('members')->name('members.')->group(function () {
+    Route::get('/', function () {
+        return Inertia::render('Admin/Members/Index');
+    })->name('index');
+    Route::get('/create', function () {
+        return Inertia::render('Admin/Members/Create');
+    })->name('create');
+});
+
+// Anestesi Routes
+Route::prefix('anestesi')->name('anestesi.')->group(function () {
+    Route::get('/', function () {
+        return Inertia::render('Admin/Anestesi/Index');
+    })->name('index');
+});
+
+// Ibadah Routes
+Route::prefix('ibadah')->name('ibadah.')->group(function () {
+    Route::get('/', function () {
+        return Inertia::render('Admin/Ibadah/Index');
+    })->name('index');
+});
+
+// Warta Routes
+Route::prefix('warta')->name('warta.')->group(function () {
+    Route::get('/', function () {
+        return Inertia::render('Admin/Warta/Index');
+    })->name('index');
+});
+
+// Events Routes
+Route::prefix('events')->name('events.')->group(function () {
+    Route::get('/', function () {
+        return Inertia::render('Admin/Events/Index');
+    })->name('index');
 });
 
 require __DIR__.'/auth.php';
