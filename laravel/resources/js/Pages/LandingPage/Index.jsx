@@ -1,6 +1,6 @@
 import { Head } from "@inertiajs/react";
 import { useState, useEffect } from "react";
-import Navbar from "@/Components/Navbar";
+import Navbar from "@/Components/NavbarLanding";
 import HeroSection from "@/Components/HeroSection";
 import AgendaSection from "@/Components/AgendaSection";
 import PastorSection from "@/Components/PastorSection";

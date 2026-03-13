@@ -1,6 +1,6 @@
 import { useState } from "react";
 import Sidebar from "@/Components/Sidebar";
-import Navbar from "@/Components/Navbar";
+import Navbar from "@/Components/NavbarLanding";
 
 const AdminLayout = ({ children }) => {
     const [sidebarActive, setSidebarActive] = useState(false);
