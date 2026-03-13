@@ -10,6 +10,11 @@
         <link rel="preconnect" href="https://fonts.bunny.net">
         <link href="https://fonts.bunny.net/css?family=figtree:400,500,600&display=swap" rel="stylesheet" />
 
+        <!-- WowDash CSS -->
+        <link rel="stylesheet" href="{{ asset('assets/css/lib/bootstrap.min.css') }}">
+        <link rel="stylesheet" href="{{ asset('assets/css/remixicon.css') }}">
+        <link rel="stylesheet" href="{{ asset('assets/css/style.css') }}">
+
         <!-- Scripts -->
         @routes
         @viteReactRefresh
