@@ -1,100 +1,223 @@
-import Checkbox from '@/Components/Checkbox';
-import InputError from '@/Components/InputError';
-import InputLabel from '@/Components/InputLabel';
-import PrimaryButton from '@/Components/PrimaryButton';
-import TextInput from '@/Components/TextInput';
-import GuestLayout from '@/Layouts/GuestLayout';
-import { Head, Link, useForm } from '@inertiajs/react';
+import { Head, useForm } from "@inertiajs/react";
 
-export default function Login({ status, canResetPassword }) {
-    const { data, setData, post, processing, errors, reset } = useForm({
-        email: '',
-        password: '',
+export default function Login({ status }) {
+    const { data, setData, post, processing, errors } = useForm({
+        email: "",
+        password: "",
         remember: false,
     });
 
     const submit = (e) => {
         e.preventDefault();
-
-        post(route('login'), {
-            onFinish: () => reset('password'),
-        });
+        post(route("login"));
     };
 
     return (
-        <GuestLayout>
-            <Head title="Log in" />
-
-            {status && (
-                <div className="mb-4 text-sm font-medium text-green-600">
-                    {status}
-                </div>
-            )}
-
-            <form onSubmit={submit}>
-                <div>
-                    <InputLabel htmlFor="email" value="Email" />
-
-                    <TextInput
-                        id="email"
-                        type="email"
-                        name="email"
-                        value={data.email}
-                        className="mt-1 block w-full"
-                        autoComplete="username"
-                        isFocused={true}
-                        onChange={(e) => setData('email', e.target.value)}
-                    />
-
-                    <InputError message={errors.email} className="mt-2" />
-                </div>
-
-                <div className="mt-4">
-                    <InputLabel htmlFor="password" value="Password" />
-
-                    <TextInput
-                        id="password"
-                        type="password"
-                        name="password"
-                        value={data.password}
-                        className="mt-1 block w-full"
-                        autoComplete="current-password"
-                        onChange={(e) => setData('password', e.target.value)}
-                    />
-
-                    <InputError message={errors.password} className="mt-2" />
-                </div>
-
-                <div className="mt-4 block">
-                    <label className="flex items-center">
-                        <Checkbox
-                            name="remember"
-                            checked={data.remember}
-                            onChange={(e) =>
-                                setData('remember', e.target.checked)
-                            }
+        <>
+            <Head title="Login" />
+            <div
+                style={{
+                    minHeight: "100vh",
+                    display: "flex",
+                    alignItems: "center",
+                    justifyContent: "center",
+                    backgroundColor: "#f5f5f5",
+                    padding: "20px",
+                }}
+            >
+                <div
+                    style={{
+                        backgroundColor: "white",
+                        padding: "40px",
+                        borderRadius: "12px",
+                        boxShadow: "0 4px 6px rgba(0, 0, 0, 0.1)",
+                        width: "100%",
+                        maxWidth: "400px",
+                    }}
+                >
+                    <div style={{ textAlign: "center", marginBottom: "30px" }}>
+                        <img
+                            src="/assets/images/logo-new.jpg"
+                            alt="GKI Martadireja"
+                            style={{
+                                width: "168px",
+                                height: "40px",
+                                objectFit: "contain",
+                                marginBottom: "20px",
+                            }}
                         />
-                        <span className="ms-2 text-sm text-gray-600">
-                            Remember me
-                        </span>
-                    </label>
-                </div>
-
-                <div className="mt-4 flex items-center justify-end">
-                    {canResetPassword && (
-                        <Link
-                            href={route('password.request')}
-                            className="rounded-md text-sm text-gray-600 underline hover:text-gray-900 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2"
+                    </div>
+                    <h2
+                        style={{
+                            textAlign: "center",
+                            fontSize: "24px",
+                            fontWeight: "600",
+                            marginBottom: "30px",
+                            color: "#333",
+                        }}
+                    >
+                        Login
+                    </h2>
+                    {status && (
+                        <div
+                            style={{
+                                padding: "12px",
+                                marginBottom: "20px",
+                                backgroundColor: "#d4edda",
+                                color: "#155724",
+                                borderRadius: "6px",
+                                fontSize: "14px",
+                            }}
                         >
-                            Forgot your password?
-                        </Link>
+                            {status}
+                        </div>
                     )}
-
-                    <PrimaryButton className="ms-4" disabled={processing}>
-                        Log in
-                    </PrimaryButton>
+                    <form onSubmit={submit}>
+                        <div style={{ marginBottom: "20px" }}>
+                            <label
+                                htmlFor="email"
+                                style={{
+                                    display: "block",
+                                    marginBottom: "8px",
+                                    fontSize: "14px",
+                                    fontWeight: "500",
+                                    color: "#555",
+                                }}
+                            >
+                                Email address
+                            </label>
+                            <input
+                                type="email"
+                                id="email"
+                                value={data.email}
+                                onChange={(e) =>
+                                    setData("email", e.target.value)
+                                }
+                                autoComplete="username"
+                                autoFocus
+                                style={{
+                                    width: "100%",
+                                    padding: "12px",
+                                    fontSize: "14px",
+                                    border: errors.email
+                                        ? "1px solid #dc3545"
+                                        : "1px solid #ddd",
+                                    borderRadius: "6px",
+                                    outline: "none",
+                                }}
+                            />
+                            {errors.email && (
+                                <div
+                                    style={{
+                                        color: "#dc3545",
+                                        fontSize: "12px",
+                                        marginTop: "5px",
+                                    }}
+                                >
+                                    {errors.email}
+                                </div>
+                            )}
+                        </div>
+                        <div style={{ marginBottom: "20px" }}>
+                            <label
+                                htmlFor="password"
+                                style={{
+                                    display: "block",
+                                    marginBottom: "8px",
+                                    fontSize: "14px",
+                                    fontWeight: "500",
+                                    color: "#555",
+                                }}
+                            >
+                                Password
+                            </label>
+                            <input
+                                type="password"
+                                id="password"
+                                value={data.password}
+                                onChange={(e) =>
+                                    setData("password", e.target.value)
+                                }
+                                autoComplete="current-password"
+                                style={{
+                                    width: "100%",
+                                    padding: "12px",
+                                    fontSize: "14px",
+                                    border: errors.password
+                                        ? "1px solid #dc3545"
+                                        : "1px solid #ddd",
+                                    borderRadius: "6px",
+                                    outline: "none",
+                                }}
+                            />
+                            {errors.password && (
+                                <div
+                                    style={{
+                                        color: "#dc3545",
+                                        fontSize: "12px",
+                                        marginTop: "5px",
+                                    }}
+                                >
+                                    {errors.password}
+                                </div>
+                            )}
+                        </div>
+                        <div style={{ marginBottom: "24px" }}>
+                            <label
+                                style={{
+                                    display: "flex",
+                                    alignItems: "center",
+                                    cursor: "pointer",
+                                    fontSize: "14px",
+                                    color: "#555",
+                                }}
+                            >
+                                <input
+                                    type="checkbox"
+                                    checked={data.remember}
+                                    onChange={(e) =>
+                                        setData("remember", e.target.checked)
+                                    }
+                                    style={{
+                                        marginRight: "8px",
+                                        cursor: "pointer",
+                                    }}
+                                />
+                                Remember me
+                            </label>
+                        </div>
+                        <button
+                            type="submit"
+                            disabled={processing}
+                            style={{
+                                width: "100%",
+                                padding: "12px",
+                                fontSize: "16px",
+                                fontWeight: "600",
+                                color: "white",
+                                backgroundColor: processing
+                                    ? "#ccc"
+                                    : "#f59e0b",
+                                border: "none",
+                                borderRadius: "6px",
+                                cursor: processing ? "not-allowed" : "pointer",
+                            }}
+                        >
+                            {processing ? "Loading..." : "Sign in"}
+                        </button>
+                    </form>
+                    <div
+                        style={{
+                            marginTop: "30px",
+                            textAlign: "center",
+                            fontSize: "12px",
+                            color: "#999",
+                        }}
+                    >
+                        © {new Date().getFullYear()} GKI Martadireja
+                    </div>
                 </div>
-            </form>
-        </GuestLayout>
+            </div>
+        </>
     );
 }
