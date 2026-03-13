@@ -1,55 +1,53 @@
 <?php
 
+use App\Http\Controllers\Landingpagecontroller;
 use App\Http\Controllers\ProfileController;
 use Illuminate\Foundation\Application;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
 
+// ─── Landing Page ────────────────────────────────────────────────────────────
+// Redirect root to dashboard
 Route::get('/', function () {
-    return Inertia::render('Admin/Dashboard');
+    return redirect('/dashboard');
 });
 
-Route::get('/dashboard', function () {
-    return Inertia::render('Admin/Dashboard');
-})->name('dashboard');
+// Public landing page (accessible without login)
+Route::get('/dashboard', [Landingpagecontroller::class, 'index'])->name('home');
 
-// Temporary: Routes without auth middleware for demo
-// Members Management Routes
-Route::prefix('members')->name('members.')->group(function () {
-    Route::get('/', function () {
-        return Inertia::render('Admin/Members/Index');
-    })->name('index');
-    Route::get('/create', function () {
-        return Inertia::render('Admin/Members/Create');
-    })->name('create');
+// Admin dashboard (requires authentication)
+Route::get('/admin/dashboard', function () {
+    return Inertia::render('Dashboard');
+})->middleware(['auth', 'verified'])->name('dashboard');
+
+Route::middleware('auth')->group(function () {
+    Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
+    Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
+    Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 });
 
-// Anestesi Routes
-Route::prefix('anestesi')->name('anestesi.')->group(function () {
-    Route::get('/', function () {
-        return Inertia::render('Admin/Anestesi/Index');
-    })->name('index');
+// ─── Profil ──────────────────────────────────────────────────────────────────
+Route::prefix('profil')->name('profil.')->group(function () {
+    Route::get('/visi',    fn () => inertia('Profile/Visi'))->name('visi');
+    Route::get('/misi',    fn () => inertia('Profile/Misi'))->name('misi');
+    Route::get('/sejarah', fn () => inertia('Profile/Sejarah'))->name('sejarah');
 });
-
-// Ibadah Routes
-Route::prefix('ibadah')->name('ibadah.')->group(function () {
-    Route::get('/', function () {
-        return Inertia::render('Admin/Ibadah/Index');
-    })->name('index');
+ 
+// ─── Organisasi ──────────────────────────────────────────────────────────────
+Route::prefix('organisasi')->name('organisasi.')->group(function () {
+    Route::get('/struktur', fn () => inertia('Organisasi/Struktur'))->name('struktur');
 });
-
-// Warta Routes
+ 
+// ─── Warta ────────────────────────────────────────────────────────────────────
 Route::prefix('warta')->name('warta.')->group(function () {
-    Route::get('/', function () {
-        return Inertia::render('Admin/Warta/Index');
-    })->name('index');
+    Route::get('/download', fn () => inertia('Warta/Download'))->name('download');
 });
-
-// Events Routes
-Route::prefix('events')->name('events.')->group(function () {
-    Route::get('/', function () {
-        return Inertia::render('Admin/Events/Index');
-    })->name('index');
-});
+ 
+// ─── Berita ──────────────────────────────────────────────────────────────────
+Route::get('/berita',       fn () => inertia('Berita/Index'))->name('berita.index');
+Route::get('/berita/{slug}', fn (string $slug) => inertia('Berita/Show', ['slug' => $slug]))->name('berita.show');
+ 
+// ─── Agenda ──────────────────────────────────────────────────────────────────
+Route::get('/agenda', fn () => inertia('Agenda/Index'))->name('agenda.index');
 
 require __DIR__.'/auth.php';
